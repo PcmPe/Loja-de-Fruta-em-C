@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 typedef struct fruta {
 		char nome[15];
@@ -23,11 +22,7 @@ Lista* alterar_fruta(Lista* lista, int codigo);
 Lista* excluir_fruta(Lista* lista, int codigo);
 Lista* vender_fruta(Lista* lista, int codigo);
 void registrar_venda(Fruta f, int quantidade);
-void obter_horario_atual(char *buffer, size_t buffer_size) {
-		time_t agora = time(NULL); 
-		struct tm *horario_local = localtime(&agora);
-		strftime(buffer, buffer_size, "%Y/%m/%d %H:%M:%S", horario_local);
-}
+
 
 Lista* criar_fruta() {
 		Lista *novo = (Lista*)malloc(sizeof(Lista));
@@ -131,10 +126,8 @@ Lista* vender_fruta(Lista* lista, int codigo) {
 void registrar_venda(Fruta f, int quantidade) {
 		FILE *file = fopen("registro.txt", "a");
 		if(file != NULL) {
-				char buffer[20];
-				obter_horario_atual(buffer, sizeof(buffer));
-				fprintf(file, "Nome: %s\nCódigo: %d\nQuantidade vendida: %d\nPreço unitário: R$%.2f\nTotal: R$%.2f\nData e Hora: %s\n\n", 
-								f.nome, f.codigo, quantidade, f.preco, quantidade * f.preco, buffer);
+				fprintf(file, "Nome: %s\nCódigo: %d\nQuantidade vendida: %d\nPreço unitário: R$%.2f\nTotal: R$%.2f\n\n", 
+								f.nome, f.codigo, quantidade, f.preco, quantidade * f.preco);
 				fclose(file);
 		} else {
 				printf("Erro ao abrir o arquivo de registro.\n");
